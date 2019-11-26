@@ -21,6 +21,25 @@ import canard.esport.recrutement.model.Player;
 public class MainService {
     private List<Player> listPlayers = new LinkedList<>();
 
+    public void init() {
+        List<List<String>> records = new ArrayList<>();
+        try (CSVReader csvReader = new CSVReader(new FileReader("C:\\Users\\maabdela\\Downloads\\EPSI\\Workshop\\recrutement\\src\\main\\resources\\data.csv"))) {
+            String[] values = null;
+            while ((values = csvReader.readNext()) != null) {
+                records.add(Arrays.asList(values));
+            }
+        } catch (IOException e) {
+            System.out.println("Impossible to access following file : " + e);
+        }
+
+        for (List<String> record : records) {
+            String joueur = record.get(0);
+            List<String> listAttributs = Arrays.asList(joueur.split(";"));
+            Player player = new Player(listAttributs.get(0), Integer.parseInt(listAttributs.get(1)), Integer.parseInt(listAttributs.get(3)),
+                    Integer.parseInt(listAttributs.get(4)));
+            listPlayers.add(player);
+        }
+    }
     /**
      * Méthode permettant de calculer le poids d'une donnée.
      * @return List<player> - La liste des meilleurs joueurs pondérée et triée.
@@ -34,6 +53,7 @@ public class MainService {
             @RequestParam
                     int winrate) {
 
+        init();
         for (Player player : listPlayers) {
             int score = (player.getRank() * 10 * rank + player.getChamps() * 2 * champs + player.getWinrate() * winrate) / 3;
             player.setScore(score);
@@ -53,24 +73,7 @@ public class MainService {
      */
     @RequestMapping("/topPlayers")
     public List<Player> topPlayers() {
-        List<List<String>> records = new ArrayList<List<String>>();
-        try (CSVReader csvReader = new CSVReader(new FileReader("C:\\Users\\maabdela\\Downloads\\EPSI\\Workshop\\recrutement\\src\\main\\resources\\data.csv"))) {
-            String[] values = null;
-            while ((values = csvReader.readNext()) != null) {
-                records.add(Arrays.asList(values));
-            }
-        } catch (IOException e) {
-            System.out.println("Impossible to access following file : " + e);
-        }
-
-        for (List<String> record : records) {
-            String joueur = record.get(0);
-            List<String> listAttributs = Arrays.asList(joueur.split(";"));
-            Player player = new Player(listAttributs.get(0), Integer.parseInt(listAttributs.get(1)), Integer.parseInt(listAttributs.get(3)),
-                    Integer.parseInt(listAttributs.get(4)));
-            listPlayers.add(player);
-        }
-
+        init();
         for (Player player : listPlayers) {
             int score = (player.getRank() * 10 + player.getChamps() * 2 + player.getWinrate()) / 3;
             player.setScore(score);

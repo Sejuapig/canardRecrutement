@@ -11,8 +11,5 @@ public class RecrutementApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(RecrutementApplication.class, args);
         MainService mainService = new MainService();
-        mainService.topPlayers();
-        mainService.calculPonderation(75, 80, 60);
 	}
-
 }
