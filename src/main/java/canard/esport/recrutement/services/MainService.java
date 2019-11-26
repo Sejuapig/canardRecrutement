@@ -1,5 +1,6 @@
 package canard.esport.recrutement.services;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -9,6 +10,9 @@ import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,11 +23,22 @@ import canard.esport.recrutement.model.Player;
 
 @RestController
 public class MainService {
+
+    @Value("${csvPath}")
+    private String filepath;
+
+    @Autowired
+    private ResourceLoader resourceLoader;
+
     private List<Player> listPlayers = new LinkedList<>();
+
+    public File getPropertyFile() throws IOException {
+        return resourceLoader.getResource(filepath).getFile();
+    }
 
     public void init() {
         List<List<String>> records = new ArrayList<>();
-        try (CSVReader csvReader = new CSVReader(new FileReader("C:\\Users\\maabdela\\Downloads\\EPSI\\Workshop\\recrutement\\src\\main\\resources\\data.csv"))) {
+        try (CSVReader csvReader = new CSVReader(new FileReader(getPropertyFile().getPath()))) {
             String[] values = null;
             while ((values = csvReader.readNext()) != null) {
                 records.add(Arrays.asList(values));
@@ -40,6 +55,7 @@ public class MainService {
             listPlayers.add(player);
         }
     }
+
     /**
      * Méthode permettant de calculer le poids d'une donnée.
      * @return List<player> - La liste des meilleurs joueurs pondérée et triée.
