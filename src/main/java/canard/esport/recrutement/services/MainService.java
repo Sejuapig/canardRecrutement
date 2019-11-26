@@ -10,9 +10,7 @@ import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,13 +25,10 @@ public class MainService {
     @Value("${csvPath}")
     private String filepath;
 
-    @Autowired
-    private ResourceLoader resourceLoader;
-
     private List<Player> listPlayers = new LinkedList<>();
 
-    public File getPropertyFile() throws IOException {
-        return resourceLoader.getResource(filepath).getFile();
+    public File getPropertyFile() {
+        return new File(filepath);
     }
 
     public void init() {
