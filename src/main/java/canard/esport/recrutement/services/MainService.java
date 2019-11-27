@@ -20,6 +20,7 @@ import com.opencsv.CSVReader;
 
 import canard.esport.recrutement.model.Player;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 public class MainService {
 
@@ -46,8 +47,7 @@ public class MainService {
         for (List<String> record : records) {
             String joueur = record.get(0);
             List<String> listAttributs = Arrays.asList(joueur.split(";"));
-            Player player = new Player(listAttributs.get(0), Integer.parseInt(listAttributs.get(1)), Integer.parseInt(listAttributs.get(3)),
-                    Integer.parseInt(listAttributs.get(4)));
+            Player player = new Player(listAttributs.get(0), Integer.parseInt(listAttributs.get(1)), Integer.parseInt(listAttributs.get(3)), Integer.parseInt(listAttributs.get(4)));
             listPlayers.add(player);
         }
     }
@@ -56,7 +56,6 @@ public class MainService {
      * Méthode permettant de calculer le poids d'une donnée.
      * @return List<player> - La liste des meilleurs joueurs pondérée et triée.
      */
-    @CrossOrigin(origins = "http://localhost:3000")
     @RequestMapping("/calculPonderation")
     public List<Player> calculPonderation(
             @RequestParam
