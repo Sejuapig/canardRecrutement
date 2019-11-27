@@ -11,6 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -55,6 +56,7 @@ public class MainService {
      * Méthode permettant de calculer le poids d'une donnée.
      * @return List<player> - La liste des meilleurs joueurs pondérée et triée.
      */
+    @CrossOrigin(origins = "http://localhost:3000")
     @RequestMapping("/calculPonderation")
     public List<Player> calculPonderation(
             @RequestParam
