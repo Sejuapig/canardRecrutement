@@ -35,6 +35,7 @@ public class MainService {
 
     public void init() {
         List<List<String>> records = new ArrayList<>();
+        listPlayers = new LinkedList<>();
         try (CSVReader csvReader = new CSVReader(new FileReader(getPropertyFile().getPath()))) {
             String[] values = null;
             while ((values = csvReader.readNext()) != null) {
@@ -76,7 +77,8 @@ public class MainService {
 
         System.out.println("listPlayers pondérée = " + listPlayers);
 
-        return listPlayers;
+        List<Player> list = listPlayers.subList(0, 50);
+        return list;
     }
 
     /**
@@ -96,6 +98,8 @@ public class MainService {
 
         System.out.println("listPlayers = " + listPlayers);
 
-        return listPlayers;
+        List<Player> list = listPlayers.subList(0, 50);
+
+        return list;
     }
 }
